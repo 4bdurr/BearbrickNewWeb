@@ -116,7 +116,7 @@ export const BearbrickViewer = ({ activeTextureUrl, isDetailView, onClickModel }
     <>
       <PerspectiveCamera
         makeDefault
-        position={[0, 2, 16]}
+        position={[0, 0, 16]}
         fov={50}
         aspect={window.innerWidth / window.innerHeight}
         near={0.1}
