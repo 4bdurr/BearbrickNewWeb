@@ -1,36 +1,31 @@
 import React from "react";
-import { ChevronRight } from "lucide-react";
 
-export const DetailCard = ({ data, onShowMore = () => {} }) => {
+export const DetailCard = ({ data }) => {
   if (!data) return null;
 
   return (
-    <div className="relative flex h-145 w-115 flex-col justify-between rounded-[36px] border border-black/5 bg-[#F9F6E5]/90 p-8 shadow-2xl backdrop-blur-md">
-      {/* Title & Series */}
-      <div>
-        <h2 className="font-japanese text-3xl leading-tight tracking-wider text-black">
-          {data.title}
-        </h2>
-        <p className="mt-3 font-mono text-xs font-semibold tracking-widest text-black/80">
-          {data.series}
-        </p>
+    <div className="relative flex h-full w-[460px] flex-col justify-start rounded-t-[44px] rounded-b-none border-t border-l border-white/60 bg-[#F7F3D3]/65 p-10 shadow-[0_-10px_35px_rgba(0,0,0,0.06)] backdrop-blur-[24px] backdrop-saturate-150">
+      {/* Title */}
+      <h2 className="font-japanese text-4xl leading-[1.15] tracking-wider text-black select-none">
+        {data.title || "KATSUSHIKA HOKUSAI"}
+      </h2>
 
-        {/* Scrollable Lore / Description Container */}
-        <div className="mt-5 h-70 overflow-y-auto pr-3 text-[11px] font-medium leading-relaxed text-black/85 scrollbar-thin">
-          <p className="font-bold text-black">{data.artist}</p>
-          <div className="mt-2 whitespace-pre-line">{data.description}</div>
+      {/* Series Info */}
+      <p className="mt-6 font-mono text-sm font-semibold tracking-widest text-black/90 select-none">
+        {data.series || "Series 46 | Exhibition Edition"}
+      </p>
+
+      {/* Scrollable Lore / Description */}
+      <div className="no-scrollbar mt-8 flex-1 overflow-y-auto pr-2 font-mono text-[11.5px] leading-relaxed text-black/80 scrollbar-none">
+        {data.artist && (
+          <p className="mb-2 font-bold text-black uppercase tracking-wide">
+            {data.artist}
+          </p>
+        )}
+        <div className="space-y-3 whitespace-pre-line font-medium">
+          {data.description}
         </div>
       </div>
-
-      {/* Action Button */}
-      <button
-        type="button"
-        onClick={onShowMore}
-        className="flex items-center justify-center gap-2 rounded-full bg-[#F15A24] px-6 py-3 font-mono text-xs font-bold tracking-wider text-white shadow-md transition-all hover:bg-[#d94815] hover:scale-[1.02] active:scale-[0.98]"
-      >
-        <span>Show more details</span>
-        <ChevronRight size={14} />
-      </button>
     </div>
   );
 };

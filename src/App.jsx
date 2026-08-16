@@ -36,17 +36,15 @@ export const App = () => {
         </div>
 
         {isDetailView ? (
-          /* Close Button saat mode detail */
           <button
             type="button"
             onClick={() => setIsDetailView(false)}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-black transition-transform hover:scale-110"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-black transition-transform hover:scale-110 cursor-pointer"
             aria-label="Close detail view"
           >
             <X size={28} />
           </button>
         ) : (
-          /* Navigasi Standard Homepage */
           <div className="flex items-center gap-6">
             <div className="relative flex items-center">
               <input
@@ -54,18 +52,29 @@ export const App = () => {
                 placeholder="Search collection..."
                 className="h-9 w-60 rounded-full border border-black/80 bg-transparent px-4 pr-9 text-xs font-medium text-black placeholder:text-black/50 focus:outline-hidden focus:ring-1 focus:ring-black"
               />
-              <Search size={14} className="absolute right-3.5 text-black/80 pointer-events-none" />
+              <Search
+                size={14}
+                className="absolute right-3.5 text-black/80 pointer-events-none"
+              />
             </div>
 
-            {/* Social Media Icons (react-icons/fa6) */}
             <div className="flex items-center gap-4 text-black">
-              <a href="#instagram" className="transition-transform hover:scale-110">
+              <a
+                href="#instagram"
+                className="transition-transform hover:scale-110"
+              >
                 <FaInstagram size={17} />
               </a>
-              <a href="#twitter" className="transition-transform hover:scale-110">
+              <a
+                href="#twitter"
+                className="transition-transform hover:scale-110"
+              >
                 <FaXTwitter size={15} />
               </a>
-              <a href="#facebook" className="transition-transform hover:scale-110">
+              <a
+                href="#facebook"
+                className="transition-transform hover:scale-110"
+              >
                 <FaFacebookF size={15} />
               </a>
             </div>
@@ -81,14 +90,15 @@ export const App = () => {
         )}
       </header>
 
-      {/* Stage Tengah: 3D Canvas + Overlay Detail */}
-      <div className="relative z-10 flex flex-1 items-center justify-center px-8">
-        {/* Canvas 3D */}
-        <div className="absolute inset-0 z-0">
-          <Canvas
-            camera={{ position: [0, 0, 16], fov: 50 }}
-            className="h-full w-full"
-          >
+      {/* Stage Utama */}
+      <div className="relative z-10 flex flex-1 items-center px-8 overflow-hidden">
+        {/* Container Canvas Dinamis (Full saat Home, Geser ke Kiri saat Detail) */}
+        <div
+          className={`absolute top-0 bottom-0 left-0 transition-all duration-700 ease-in-out ${
+            isDetailView ? "w-full md:w-[48%] z-10" : "w-full z-0"
+          }`}
+        >
+          <Canvas className="h-full w-full">
             <Suspense fallback={null}>
               <BearbrickViewer
                 activeTextureUrl={currentPattern.texture}
@@ -99,14 +109,16 @@ export const App = () => {
           </Canvas>
         </div>
 
-        {/* UI Overlay saat Detail View Aktif */}
+        {/* UI Overlay Card & Vertical Swatches di sebelah Kanan */}
         {isDetailView && (
-          <div className="pointer-events-none relative z-10 flex h-full w-full items-center justify-end gap-10">
-            <div className="pointer-events-auto transition-all duration-500 animate-in fade-in slide-in-from-right-8">
+          <div className="pointer-events-none relative z-20 flex h-full w-full items-end justify-end gap-10">
+            {/* Detail Card memanjang sampai mentok ke bawah */}
+            <div className="pointer-events-auto h-full transition-all duration-500 animate-in fade-in slide-in-from-bottom-8">
               <DetailCard data={currentPattern} />
             </div>
 
-            <div className="pointer-events-auto transition-all duration-500 animate-in fade-in slide-in-from-right-12">
+            {/* Vertical Swatches sejajar di atas, scroll ke bawah */}
+            <div className="pointer-events-auto h-full transition-all duration-500 animate-in fade-in slide-in-from-right-12">
               <VerticalSwatches
                 patterns={patterns}
                 activePatternId={activePatternId}
@@ -115,17 +127,9 @@ export const App = () => {
             </div>
           </div>
         )}
-
-        {/* 360 Indicator saat Homepage Mode */}
-        {/* {!isDetailView && (
-          <div className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center select-none">
-            <span className="font-mono text-xs font-bold tracking-wider text-black">360°</span>
-            <div className="text-base leading-none font-bold text-black">↺</div>
-          </div>
-        )} */}
       </div>
 
-      {/* Bottom Swatches saat Homepage Mode */}
+      {/* Bottom Carousel saat Homepage Mode */}
       {!isDetailView && (
         <BottomCarousel
           patterns={patterns}

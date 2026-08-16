@@ -9,28 +9,20 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
   const isFirstRender = useRef(true);
   const { scene } = useGLTF("/models/bearbrick.glb");
 
-  // 1. Transisi Pergeseran Posisi & Ukuran (Overview vs Detail)
+  // 1. Skala Model menyesuaikan mode (X tetap 0 di tengah viewport canvasnya)
   useEffect(() => {
     if (!modelGroupRef.current) return;
 
-    gsap.to(modelGroupRef.current.position, {
-      x: isDetailView ? -3.2 : 0,
-      y: isDetailView ? -0.2 : -0.3,
-      z: 0,
-      duration: 0.8,
-      ease: "power3.inOut",
-    });
-
     gsap.to(modelGroupRef.current.scale, {
-      x: isDetailView ? 1.35 : 1.2,
-      y: isDetailView ? 1.35 : 1.2,
-      z: isDetailView ? 1.35 : 1.2,
-      duration: 0.8,
+      x: isDetailView ? 1.20 : 1.15,
+      y: isDetailView ? 1.20 : 1.15,
+      z: isDetailView ? 1.20 : 1.15,
+      duration: 0.7,
       ease: "power3.inOut",
     });
   }, [isDetailView]);
 
-  // 2. Load Tekstur, Pasang ke Material, & Jalankan Rotasi Spin
+  // 2. Load Tekstur, Pasang ke Material, & Putar Spin 360
   useEffect(() => {
     if (!textureUrl) return;
 
@@ -40,16 +32,12 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
       loadedTexture.colorSpace = THREE.SRGBColorSpace;
       loadedTexture.needsUpdate = true;
 
-      // Terapkan tekstur dan properti bayangan ke semua mesh
       scene.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
           child.receiveShadow = true;
 
-          if (
-            !child.material ||
-            child.material.type !== "MeshStandardMaterial"
-          ) {
+          if (!child.material || child.material.type !== "MeshStandardMaterial") {
             child.material = new THREE.MeshStandardMaterial({
               map: loadedTexture,
               roughness: 0.35,
@@ -62,7 +50,6 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
         }
       });
 
-      // Putar 360 derajat hanya jika bukan render pertama kali
       if (isFirstRender.current) {
         isFirstRender.current = false;
       } else if (rotateGroupRef.current) {
@@ -78,8 +65,8 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
   return (
     <group
       ref={modelGroupRef}
-      position={[0, -0.3, 0]}
-      scale={1.2}
+      position={[0, -0.4, 0]}
+      scale={1.15}
       onClick={(e) => {
         e.stopPropagation();
         onClickModel();
@@ -97,34 +84,29 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
     </group>
   );
 }
-export const BearbrickViewer = ({
-  activeTextureUrl,
-  isDetailView,
-  onClickModel,
-}) => {
+
+export const BearbrickViewer = ({ activeTextureUrl, isDetailView, onClickModel }) => {
   const controlsRef = useRef();
 
-  // Sinkronisasi target kamera saat berpindah mode
+  // Reset kamera ketika berpindah tampilan
   useEffect(() => {
     if (!controlsRef.current) return;
 
-    // Geser titik fokus OrbitControls
     gsap.to(controlsRef.current.target, {
-      x: isDetailView ? -3.2 : 0,
-      y: isDetailView ? -0.2 : -0.3,
+      x: 0,
+      y: -0.2,
       z: 0,
-      duration: 0.8,
+      duration: 0.7,
       ease: "power3.inOut",
       onUpdate: () => controlsRef.current.update(),
     });
 
-    // Reset posisi kamera agar kembali lurus menghadap depan saat mode Overview
     if (!isDetailView && controlsRef.current.object) {
       gsap.to(controlsRef.current.object.position, {
         x: 0,
         y: 0,
         z: 16,
-        duration: 0.8,
+        duration: 0.7,
         ease: "power3.inOut",
       });
     }
@@ -134,8 +116,9 @@ export const BearbrickViewer = ({
     <>
       <PerspectiveCamera
         makeDefault
-        position={[0, 0, 16]}
+        position={[0, 2, 16]}
         fov={50}
+        aspect={window.innerWidth / window.innerHeight}
         near={0.1}
         far={100}
       />
@@ -160,5 +143,6 @@ export const BearbrickViewer = ({
     </>
   );
 };
+
 useGLTF.preload("/models/bearbrick.glb");
 export default BearbrickViewer;
