@@ -5,7 +5,8 @@ export const BottomCarousel = ({ patterns, activePatternId, onSelectPattern }) =
   const baseItems = patterns.length < 8 ? [...patterns, ...patterns, ...patterns] : [...patterns, ...patterns];
 
   const renderTrack = (trackName) => (
-    <div className="flex shrink-0 items-center gap-7 pr-7 animate-marquee-right group-hover:[animation-play-state:paused]">
+    // TAMBAHKAN: py-3 di sini agar ada ruang saat scale-110
+    <div className="flex shrink-0 items-center gap-7 pr-7 py-3 animate-marquee-right group-hover:[animation-play-state:paused]">
       {baseItems.map((item, index) => {
         const isActive = activePatternId === item.id;
         return (
@@ -13,7 +14,8 @@ export const BottomCarousel = ({ patterns, activePatternId, onSelectPattern }) =
             key={`${trackName}-${item.id}-${index}`}
             type="button"
             onClick={() => onSelectPattern(item.id)}
-            className="group/item flex shrink-0 flex-col items-center gap-2 cursor-pointer outline-none"
+            // TAMBAHKAN: py-1 agar scale tidak memotong atas/bawah
+            className="group/item flex shrink-0 flex-col items-center gap-2 cursor-pointer outline-none py-1"
           >
             {/* Thumbnail Bulat */}
             <div
@@ -48,10 +50,11 @@ export const BottomCarousel = ({ patterns, activePatternId, onSelectPattern }) =
   );
 
   return (
-    <div className="group relative z-30 flex w-full overflow-hidden px-4 pb-6 select-none">
+    // TAMBAHKAN: py-2 di container luar untuk ruang ekstra
+    <div className="group relative z-30 flex w-full overflow-hidden px-4 py-2 pb-6 select-none">
       {/* Track 1 */}
       {renderTrack("track1")}
-      {/* Track 2 (Menyambung tepat di sebelahnya secara mulus) */}
+      {/* Track 2 */}
       {renderTrack("track2")}
     </div>
   );

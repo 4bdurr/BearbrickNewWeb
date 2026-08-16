@@ -1,9 +1,17 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "JapanTokyo";
+  src: url("/fonts/Japan-Tokyo.ttf") format("truetype");
+  font-display: swap;
+}
 @layer utilities {
+  .font-japanese {
+    font-family: "JapanTokyo", sans-serif;
+  }
   .bg-grid-paper {
     background-color: #f7f3d3;
-    background-image: 
+    background-image:
       linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
     background-size: 32px 32px;
