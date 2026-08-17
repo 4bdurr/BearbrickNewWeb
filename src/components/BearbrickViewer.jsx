@@ -3,26 +3,45 @@ import { useGLTF, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import { gsap } from "gsap";
 
-function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
+function BearbrickModel({
+  textureUrl,
+  isDetailView,
+  isMenuOpen,
+  onClickModel,
+}) {
   const modelGroupRef = useRef();
   const rotateGroupRef = useRef();
   const isFirstRender = useRef(true);
   const { scene } = useGLTF("/models/bearbrick.glb");
 
-  // 1. Skala Model menyesuaikan mode (X tetap 0 di tengah viewport canvasnya)
+  // 1. Animasi Skala & Visibilitas saat berganti Mode (Home / Detail / Menu)
   useEffect(() => {
     if (!modelGroupRef.current) return;
 
+    if (isMenuOpen) {
+      // Sembunyikan model saat menu terbuka
+      gsap.to(modelGroupRef.current.scale, {
+        x: 0,
+        y: 0,
+        z: 0,
+        duration: 0.5,
+        ease: "power2.in",
+      });
+      return;
+    }
+
+    // Skala saat Detail View vs Home
+    const targetScale = isDetailView ? 1.25 : 1.2;
     gsap.to(modelGroupRef.current.scale, {
-      x: isDetailView ? 1.20 : 1.15,
-      y: isDetailView ? 1.20 : 1.15,
-      z: isDetailView ? 1.20 : 1.15,
+      x: targetScale,
+      y: targetScale,
+      z: targetScale,
       duration: 0.7,
       ease: "power3.inOut",
     });
-  }, [isDetailView]);
+  }, [isDetailView, isMenuOpen]);
 
-  // 2. Load Tekstur, Pasang ke Material, & Putar Spin 360
+  // 2. Load Tekstur, Pasang ke Material, & Animasi Spin 360°
   useEffect(() => {
     if (!textureUrl) return;
 
@@ -69,10 +88,10 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
       scale={1.15}
       onClick={(e) => {
         e.stopPropagation();
-        onClickModel();
+        if (!isMenuOpen) onClickModel();
       }}
       onPointerOver={() => {
-        document.body.style.cursor = "pointer";
+        if (!isMenuOpen) document.body.style.cursor = "pointer";
       }}
       onPointerOut={() => {
         document.body.style.cursor = "auto";
@@ -85,7 +104,12 @@ function BearbrickModel({ textureUrl, isDetailView, onClickModel }) {
   );
 }
 
-export const BearbrickViewer = ({ activeTextureUrl, isDetailView, onClickModel }) => {
+export const BearbrickViewer = ({
+  activeTextureUrl,
+  isDetailView,
+  isMenuOpen,
+  onClickModel,
+}) => {
   const controlsRef = useRef();
 
   // Reset kamera ketika berpindah tampilan
@@ -130,11 +154,13 @@ export const BearbrickViewer = ({ activeTextureUrl, isDetailView, onClickModel }
       <BearbrickModel
         textureUrl={activeTextureUrl}
         isDetailView={isDetailView}
+        isMenuOpen={isMenuOpen}
         onClickModel={onClickModel}
       />
 
       <OrbitControls
         ref={controlsRef}
+        enabled={!isMenuOpen}
         enableZoom={false}
         enablePan={false}
         minPolarAngle={Math.PI / 2.5}

@@ -39,7 +39,7 @@ export const DetailCard = ({ data, onShowMore = () => {} }) => {
         <button
           type="button"
           onClick={onShowMore}
-          className="flex w-64 items-center justify-between rounded-full bg-[#F15A24] px-6 py-3.5 font-mono text-xs font-bold tracking-wider text-white shadow-md transition-all duration-200 hover:bg-[#d94815] hover:shadow-lg active:scale-95"
+          className="flex w-64 items-center justify-between rounded-full bg-[#F97316] px-6 py-3.5 font-mono text-xs font-bold tracking-wider text-white shadow-md transition-all duration-200 hover:bg-[#d94815] hover:shadow-lg active:scale-95"
         >
           <span>Show more details</span>
           <ChevronRight size={15} className="stroke-[2.5]" />

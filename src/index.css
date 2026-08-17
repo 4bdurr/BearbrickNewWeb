@@ -10,7 +10,7 @@
     font-family: "JapanTokyo", sans-serif;
   }
   .bg-grid-paper {
-    background-color: #f7f3d3;
+    background-color: #FEF9D0;
     background-image:
       linear-gradient(to right, rgba(0, 0, 0, 0.08) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
@@ -30,8 +30,8 @@
     }
   }
 }
-/* Visualizer Flexbox
-.flex,
+/* /* Visualizer Flexbox */
+/* .flex,
 [class*="flex"] {
   outline: 2px dashed rgba(239, 68, 68, 0.7) !important;
   background-color: rgba(239, 68, 68, 0.03);
@@ -40,4 +40,4 @@
 .flex > *,
 [class*="flex"] > * {
   outline: 1px solid rgba(59, 130, 246, 0.5) !important;
-} */
+}  */
