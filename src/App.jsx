@@ -22,7 +22,7 @@ export const App = () => {
         <img
           src="/images/Mount_Fuji.png"
           alt="Mount Fuji"
-          className="w-full min-w-300 max-w-[1600px] object-cover opacity-20 select-none translate-y-4"
+          className="w-full min-w-300 max-w-[1600px] object-cover opacity-30 select-none translate-y-4"
         />
       </div>
 

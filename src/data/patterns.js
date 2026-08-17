@@ -77,4 +77,71 @@ A tribute to classical ukiyo-e woodblock landscapes reimagined into kinetic flui
     thumb: "/textures/autumn.jpg",
     description: `Earthy micro-patterns capturing the gentle drift of maple foliage across stone zen gardens. A celebration of wabi-sabi and transient beauty.`,
   },
+
+  {
+    id: "child",
+    name: "Child",
+    title: "INNOCENT NOSTALGIA",
+    series: "Series 48 | Youth Edition",
+    artist: "Showa Memories Guild",
+    texture: "/textures/child.jpg",
+    thumb: "/textures/child.jpg",
+    description: `Capturing the unrefined wonder of early childhood through playful strokes and pure raw tones. 
+Every pigment serves as an ode to untamed imaginations before reality imposed its geometric boundaries. A tender exploration of pure spirit and unfiltered daylight memories.`,
+  },
+  {
+    id: "graphs",
+    name: "Graphs",
+    title: "QUANTUM STRATA",
+    series: "Series 47 | Cyber Grid Edition",
+    artist: "Neo-Tokyo Data Lab",
+    texture: "/textures/graphs.jpg",
+    thumb: "/textures/graphs.jpg",
+    description: `Structured analytical trajectories interwoven across a mathematical canvas. 
+The visual rhythmic interplay of axes and geometric coordinates reflects the digital pulse humming underneath modern urban architecture. Structured, precise, and infinitely calculating.`,
+  },
+  {
+    id: "windaws",
+    name: "Windaws",
+    title: "VAPOR RETRO ARCHIVE",
+    series: "Series 45 | Digital Vintage",
+    artist: "Pixel Artisan 95",
+    texture: "/textures/windaws.jpg",
+    thumb: "/textures/windaws.jpg",
+    description: `An homage to the pioneering dawn of graphical user interfaces and early desktop operating systems.
+Iconic window frames and nostalgic chromatic palettes blend into a surreal collage of late-90s digital optimism and aesthetic subcultures.`,
+  },
+  {
+    id: "sonata",
+    name: "Sonata",
+    title: "MIDNIGHT RHAPSODY",
+    series: "Series 49 | Classical Opus",
+    artist: "Kyoto Symphony Circle",
+    texture: "/textures/sonata.jpg",
+    thumb: "/textures/sonata.jpg",
+    description: `Fluid visual harmonies that translate classical acoustic cadences into tangible marble waves.
+Rich dramatic contrasts evoke the crescendos and delicate whisper of piano keys reverberating inside an empty concert hall at twilight.`,
+  },
+  {
+    id: "cute",
+    name: "Cute",
+    title: "KAWAII HARAJUKU",
+    series: "Series 48 | Pastel Bloom",
+    artist: "Harajuku Pop Collective",
+    texture: "/textures/cute.jpg",
+    thumb: "/textures/cute.jpg",
+    description: `Vibrant, effervescent, and unapologetically playful. 
+Inspired by the colorful street styles and character cultures of modern Tokyo, bringing instant kinetic joy and bubblegum-toned dopamine into sculptural toy design.`,
+  },
+  {
+    id: "square",
+    name: "Square",
+    title: "BRUTALIST MOSAIC",
+    series: "Series 46 | Concrete Grid",
+    artist: "Metabolism Studio",
+    texture: "/textures/square.jpg",
+    thumb: "/textures/square.jpg",
+    description: `Monolithic grid units and rigid quadrilaterals stacked in structural equilibrium.
+A tribute to post-war Japanese architectural modernism, where form follows spatial necessity without sacrificing rhythmic visual rhythm.`,
+  },
 ];
