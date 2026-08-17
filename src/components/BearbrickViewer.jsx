@@ -14,24 +14,44 @@ function BearbrickModel({
   const isFirstRender = useRef(true);
   const { scene } = useGLTF("/models/bearbrick.glb");
 
-  // 1. Animasi Skala & Visibilitas saat berganti Mode (Home / Detail / Menu)
+  // Deteksi mobile
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // Animasi posisi & skala
   useEffect(() => {
     if (!modelGroupRef.current) return;
 
     if (isMenuOpen) {
-      // Sembunyikan model saat menu terbuka
       gsap.to(modelGroupRef.current.scale, {
         x: 0,
         y: 0,
         z: 0,
-        duration: 0.5,
+        duration: 0.45,
         ease: "power2.in",
       });
       return;
     }
 
-    // Skala saat Detail View vs Home
-    const targetScale = isDetailView ? 1.25 : 1.2;
+    // Penyesuaian posisi: di mobile Detail View, figur digeser ke atas panggung (Y positif)
+    let targetX = 0;
+    let targetY = -0.4;
+    let targetScale = 1.2;
+
+    if (isMobile) {
+      targetScale = isDetailView ? 0.95 : 1.05;
+      targetY = isDetailView ? 1.2 : -0.2;
+    } else {
+      targetScale = isDetailView ? 1.25 : 1.2;
+      targetX = isDetailView ? 0 : 0; // Container canvas di desktop sudah di-anchor w-[48%]
+    }
+
+    gsap.to(modelGroupRef.current.position, {
+      x: targetX,
+      y: targetY,
+      duration: 0.7,
+      ease: "power3.inOut",
+    });
+
     gsap.to(modelGroupRef.current.scale, {
       x: targetScale,
       y: targetScale,
@@ -39,9 +59,9 @@ function BearbrickModel({
       duration: 0.7,
       ease: "power3.inOut",
     });
-  }, [isDetailView, isMenuOpen]);
+  }, [isDetailView, isMenuOpen, isMobile]);
 
-  // 2. Load Tekstur, Pasang ke Material, & Animasi Spin 360°
+  // Load tekstur & spin 360
   useEffect(() => {
     if (!textureUrl) return;
 
@@ -111,36 +131,28 @@ export const BearbrickViewer = ({
   onClickModel,
 }) => {
   const controlsRef = useRef();
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // Reset kamera ketika berpindah tampilan
   useEffect(() => {
     if (!controlsRef.current) return;
 
+    const targetY = isMobile && isDetailView ? 1.2 : -0.2;
+
     gsap.to(controlsRef.current.target, {
       x: 0,
-      y: -0.2,
+      y: targetY,
       z: 0,
       duration: 0.7,
       ease: "power3.inOut",
       onUpdate: () => controlsRef.current.update(),
     });
-
-    if (!isDetailView && controlsRef.current.object) {
-      gsap.to(controlsRef.current.object.position, {
-        x: 0,
-        y: 0,
-        z: 16,
-        duration: 0.7,
-        ease: "power3.inOut",
-      });
-    }
-  }, [isDetailView]);
+  }, [isDetailView, isMobile]);
 
   return (
     <>
       <PerspectiveCamera
         makeDefault
-        position={[0, 0, 16]}
+        position={[0, 0, isMobile ? 18 : 16]}
         fov={50}
         aspect={window.innerWidth / window.innerHeight}
         near={0.1}
