@@ -14,7 +14,6 @@ function BearbrickModel({
   const isFirstRender = useRef(true);
   const { scene } = useGLTF("/models/bearbrick.glb");
 
-  // Deteksi mobile
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   // Animasi posisi & skala
@@ -32,7 +31,6 @@ function BearbrickModel({
       return;
     }
 
-    // Penyesuaian posisi: di mobile Detail View, figur digeser ke atas panggung (Y positif)
     let targetX = 0;
     let targetY = -0.4;
     let targetScale = 1.2;
@@ -42,7 +40,7 @@ function BearbrickModel({
       targetY = isDetailView ? 1.2 : -0.2;
     } else {
       targetScale = isDetailView ? 1.25 : 1.2;
-      targetX = isDetailView ? 0 : 0; // Container canvas di desktop sudah di-anchor w-[48%]
+      targetX = 0;
     }
 
     gsap.to(modelGroupRef.current.position, {
@@ -170,12 +168,13 @@ export const BearbrickViewer = ({
         onClickModel={onClickModel}
       />
 
+      {/* OrbitControls: Matikan enableRotate khusus saat mode Detail di Mobile agar sentuhan jari menjadi scroll dokumen */}
       <OrbitControls
         ref={controlsRef}
         enabled={!isMenuOpen}
+        enableRotate={!isMobile || !isDetailView}
         enableZoom={!isDetailView}
         enablePan={false}
-        touchAction='pan-y'
         minPolarAngle={Math.PI / 2.5}
         maxPolarAngle={Math.PI / 1.8}
       />
