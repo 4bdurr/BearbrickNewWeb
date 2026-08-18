@@ -3,7 +3,7 @@ import React from "react";
 export const MobileSwatchGrid = ({ patterns, activePatternId, onSelectPattern }) => {
   return (
     <div className="w-full bg-[#F7F3D3]/80 py-3 px-4 backdrop-blur-md border-t border-black/10 shadow-lg">
-      <div className="no-scrollbar grid grid-cols-5 gap-2.5 max-h-[135px] overflow-y-auto [scrollbar-width:none]">
+      <div className="no-scrollbar grid grid-cols-5 gap-2.5 max-h-33.75 overflow-y-auto scrollbar-none">
         {patterns.map((item) => {
           const isActive = activePatternId === item.id;
           return (

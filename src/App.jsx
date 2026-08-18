@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import { useState, Suspense, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { X, Search, Menu } from "lucide-react";
 import { FaInstagram, FaXTwitter, FaFacebookF } from "react-icons/fa6";
@@ -15,8 +15,30 @@ export const App = () => {
   const [isDetailView, setIsDetailView] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // 1. Tambahkan ref untuk kontainer utama
+  const mainContainerRef = useRef(null);
+
   const currentPattern =
     patterns.find((p) => p.id === activePatternId) || patterns[0];
+
+  // 2. Fungsi untuk ganti tekstur + otomatis scroll ke atas
+  const handleSelectPattern = (id) => {
+    setActivePatternId(id);
+
+    // Scroll container utama ke paling atas dengan efek halus (smooth)
+    if (mainContainerRef.current) {
+      mainContainerRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+
+    // Backup: Scroll window browser jika layout menggunakan window scrolling
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleOpenMenu = () => {
     setIsDetailView(false);
@@ -30,9 +52,10 @@ export const App = () => {
 
   return (
     <div
+      ref={mainContainerRef} // <-- Pasang ref di sini
       className={`relative w-screen bg-grid-paper flex flex-col justify-between ${
         isDetailView
-          ? "min-h-screen overflow-y-auto md:h-screen md:overflow-hidden"
+          ? "min-h-screen overflow-y-auto md:h-screen md:overflow-hidden scroll-smooth"
           : "h-screen overflow-hidden"
       }`}
     >
@@ -129,14 +152,17 @@ export const App = () => {
         <div
           className={`transition-all duration-700 ease-in-out touch-pan-y ${
             isDetailView
-              ? "relative md:absolute top-0 bottom-0 left-0 w-full h-screen md:h-full md:w-[48%] z-10 shrink-0"
+              ? "relative md:absolute top-0 bottom-0 left-0 w-full h-[80vh] md:h-full md:w-[48%] z-10 shrink-0"
               : isMenuOpen
                 ? "hidden md:block md:w-0 md:opacity-0 md:pointer-events-none"
                 : "absolute inset-0 z-0"
           }`}
-          style={{ touchAction: 'pan-y' }}
+          style={{ touchAction: "pan-y" }}
         >
-          <Canvas className="h-full w-full">
+          <Canvas
+            className="h-full w-full touch-pan-y"
+            style={{ touchAction: "pan-y" }}
+          >
             <Suspense fallback={null}>
               <BearbrickViewer
                 activeTextureUrl={currentPattern.texture}
@@ -179,7 +205,6 @@ export const App = () => {
         {/* 2. Tampilan DETAIL VIEW */}
         {isDetailView && (
           <div className="relative z-20 flex flex-col md:flex-row w-full md:h-full md:pointer-events-none items-center md:items-end justify-end gap-6 md:gap-10 px-4 md:px-0 pb-10 md:pb-0">
-            {/* Detail Card (Mobile: Mengalir di bawah 3D model | Desktop: Terkunci di samping kanan) */}
             <div className="pointer-events-auto w-full md:w-auto h-auto md:h-full transition-all duration-500 animate-in fade-in slide-in-from-bottom-8">
               <DetailCard data={currentPattern} />
             </div>
@@ -189,40 +214,37 @@ export const App = () => {
               <VerticalSwatches
                 patterns={patterns}
                 activePatternId={activePatternId}
-                onSelectPattern={(id) => setActivePatternId(id)}
+                onSelectPattern={handleSelectPattern} // Gunakan handler baru
               />
             </div>
 
             {/* Mobile Swatches (Berada di paling bawah setelah di-scroll) */}
-            <div className="w-full block md:hidden rounded-2xl overflow-hidden shadow-lg mt-2">
+            <div className="w-full block md:hidden rounded-2xl overflow-hidden shadow-lg mt-2 pointer-events-auto">
               <MobileSwatchGrid
                 patterns={patterns}
                 activePatternId={activePatternId}
-                onSelectPattern={(id) => setActivePatternId(id)}
+                onSelectPattern={handleSelectPattern} // Gunakan handler baru
               />
             </div>
           </div>
         )}
       </div>
-      {/* BOTTOM SECTION */}
-      {/* Desktop Homepage Bottom Carousel */}
       {!isDetailView && !isMenuOpen && (
         <div className="hidden md:block">
           <BottomCarousel
             patterns={patterns}
             activePatternId={activePatternId}
-            onSelectPattern={(id) => setActivePatternId(id)}
+            onSelectPattern={handleSelectPattern}
           />
         </div>
       )}
 
-      {/* Mobile Universal 5-Column Swatch Grid (Homepage & Menu) */}
       {!isDetailView && (
         <div className="block md:hidden relative z-30">
           <MobileSwatchGrid
             patterns={patterns}
             activePatternId={activePatternId}
-            onSelectPattern={(id) => setActivePatternId(id)}
+            onSelectPattern={handleSelectPattern}
           />
         </div>
       )}

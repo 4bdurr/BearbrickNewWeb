@@ -172,7 +172,7 @@ export const BearbrickViewer = ({
       <OrbitControls
         ref={controlsRef}
         enabled={!isMenuOpen}
-        enableRotate={!isMobile || !isDetailView}
+        enableRotate={true}
         enableZoom={!isDetailView}
         enablePan={false}
         minPolarAngle={Math.PI / 2.5}
