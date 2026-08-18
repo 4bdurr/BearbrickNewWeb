@@ -33,12 +33,12 @@ export const MenuView = ({ isOpen }) => {
           y: 0,
           opacity: 1,
           duration: 0.4,
-          stagger: 0.06,
+          stagger: 0.05,
           ease: "power3.out",
         }
       ).fromTo(
         footerLinksRef.current,
-        { y: 10, opacity: 0 },
+        { y: 8, opacity: 0 },
         {
           y: 0,
           opacity: 1,
@@ -56,16 +56,16 @@ export const MenuView = ({ isOpen }) => {
   return (
     <div
       ref={containerRef}
-      className="relative z-20 flex h-full w-full flex-col justify-between py-2 md:py-8"
+      className="relative z-20 flex h-full w-full flex-col items-center justify-between pb-3 md:pb-6 pt-0 py-2 md:py-8"
     >
-      {/* Primary Centered Menu Links (Pas di Puncak Gunung Fuji) */}
-      <nav className="my-auto flex flex-col items-center justify-center gap-3.5 md:gap-6">
+      {/* Primary Links: pt-0 & leading-none membuat teks langsung menempel tepat di garis atas */}
+      <nav className="flex flex-col items-center justify-start gap-3.5 md:gap-5 pt-0 leading-none">
         {PRIMARY_LINKS.map((item, idx) => (
           <a
             key={item.label}
             ref={(el) => (primaryLinksRef.current[idx] = el)}
             href={item.href}
-            className="group relative font-mono text-base md:text-2xl font-black tracking-[0.2em] md:tracking-[0.25em] text-black transition-transform duration-300 hover:scale-105"
+            className="group relative font-mono text-sm md:text-2xl font-black tracking-[0.22em] md:tracking-[0.25em] text-black leading-none transition-transform duration-300 hover:scale-105"
           >
             <span>{item.label}</span>
             <span className="absolute -bottom-1 left-0 h-0.5 md:h-[2.5px] w-0 bg-[#D61B1F] transition-all duration-300 group-hover:w-full" />
@@ -73,17 +73,17 @@ export const MenuView = ({ isOpen }) => {
         ))}
       </nav>
 
-      {/* Footer Secondary Links */}
-      <footer className="flex flex-wrap items-center justify-center gap-5 md:gap-10 pb-2 md:pb-0">
+      {/* Footer Secondary Links: Terkunci di batas bawah */}
+      <footer className="mt-auto flex flex-wrap items-center justify-center gap-4 md:gap-10 pt-4">
         {FOOTER_LINKS.map((item, idx) => (
           <a
             key={item.label}
             ref={(el) => (footerLinksRef.current[idx] = el)}
             href={item.href}
-            className="group relative font-mono text-[10px] md:text-xs font-bold tracking-[0.14em] md:tracking-[0.18em] text-black/75 transition-colors hover:text-black"
+            className="group relative font-mono text-[9px] md:text-xs font-bold tracking-[0.14em] md:tracking-[0.18em] text-black/70 leading-none transition-colors hover:text-black"
           >
             <span>{item.label}</span>
-            <span className="absolute -bottom-1 left-0 h-[1.5px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
+            <span className="absolute -bottom-0.5 left-0 h-[1px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
           </a>
         ))}
       </footer>

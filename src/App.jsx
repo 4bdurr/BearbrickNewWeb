@@ -123,14 +123,15 @@ export const App = () => {
       </header>
 
       {/* Stage Utama */}
+      {/* Stage Utama */}
       <div className="relative z-10 flex flex-1 flex-col md:flex-row items-center md:px-8 md:overflow-hidden">
-        {/* Container Canvas 3D (Desktop: Bergeser ke Kiri 48% | Mobile Detail: Layar Penuh 100vh di Fold Pertama) */}
+        {/* Container Canvas 3D (Desktop: Bergeser ke Kiri 48% | Mobile Detail: Layar Penuh 100vh di Fold Pertama | Menu: Disembunyikan total di mobile) */}
         <div
           className={`transition-all duration-700 ease-in-out ${
             isDetailView
               ? "relative md:absolute top-0 bottom-0 left-0 w-full h-screen md:h-full md:w-[48%] z-10 shrink-0"
               : isMenuOpen
-                ? "w-0 opacity-0 pointer-events-none"
+                ? "hidden md:block md:w-0 md:opacity-0 md:pointer-events-none"
                 : "absolute inset-0 z-0"
           }`}
         >
@@ -155,9 +156,10 @@ export const App = () => {
             </div>
           )}
         </div>
+
         {/* 1. Tampilan MENU VIEW */}
         {isMenuOpen && (
-          <div className="relative z-20 flex h-full w-full min-h-0 flex-1 flex-col md:flex-row items-center justify-between px-4 md:px-0">
+          <div className="relative z-20 flex h-full w-full min-h-0 flex-1 flex-col md:flex-row items-start md:items-center justify-between px-4 md:px-0">
             <div className="flex-1 w-full h-full min-h-0">
               <MenuView isOpen={isMenuOpen} />
             </div>
@@ -172,6 +174,7 @@ export const App = () => {
             </div>
           </div>
         )}
+
         {/* 2. Tampilan DETAIL VIEW */}
         {isDetailView && (
           <div className="relative z-20 flex flex-col md:flex-row w-full md:h-full md:pointer-events-none items-center md:items-end justify-end gap-6 md:gap-10 px-4 md:px-0 pb-10 md:pb-0">
@@ -200,7 +203,7 @@ export const App = () => {
           </div>
         )}
       </div>
-
+      
       {/* BOTTOM SECTION */}
       {/* Desktop Homepage Bottom Carousel */}
       {!isDetailView && !isMenuOpen && (
