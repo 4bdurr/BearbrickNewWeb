@@ -31,17 +31,16 @@ function BearbrickModel({
       return;
     }
 
-    let targetX = 0;
-    let targetY = -0.4;
-    let targetScale = 1.2;
-
-    if (isMobile) {
-      targetScale = isDetailView ? 0.95 : 1.05;
-      targetY = isDetailView ? 1.2 : -0.2;
-    } else {
-      targetScale = isDetailView ? 1.25 : 1.2;
-      targetX = 0;
-    }
+    // Gunakan const langsung berdasarkan kondisi
+    const targetX = 0;
+    const targetY = isMobile ? (isDetailView ? 1.2 : -0.2) : -0.4;
+    const targetScale = isMobile
+      ? isDetailView
+        ? 0.95
+        : 1.05
+      : isDetailView
+        ? 1.25
+        : 1.2;
 
     gsap.to(modelGroupRef.current.position, {
       x: targetX,
@@ -58,7 +57,6 @@ function BearbrickModel({
       ease: "power3.inOut",
     });
   }, [isDetailView, isMenuOpen, isMobile]);
-
   // Load tekstur & spin 360
   useEffect(() => {
     if (!textureUrl) return;
@@ -74,7 +72,10 @@ function BearbrickModel({
           child.castShadow = true;
           child.receiveShadow = true;
 
-          if (!child.material || child.material.type !== "MeshStandardMaterial") {
+          if (
+            !child.material ||
+            child.material.type !== "MeshStandardMaterial"
+          ) {
             child.material = new THREE.MeshStandardMaterial({
               map: loadedTexture,
               roughness: 0.35,
